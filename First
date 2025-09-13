@@ -1,0 +1,57 @@
+//Date(03.09)
+#include<iostream>
+using namespace std;
+double function(double x) {
+    return sin(x) + x * x;
+}
+double dichotomy_method(double a, double b, double eps, double alpha) {
+    double x = 0, y = 0;
+    double f_x = 0;
+    double f_y = 0;
+    if (b - a <= eps) x = (a + b) / 2;
+    while (b - a > eps) {
+        x = (a + b) / 2 - alpha;
+        y = (a + b) / 2 + alpha;
+        f_x = function(x);
+        f_y = function(y);
+        if (f_x > f_y) a = x;
+        else b = y;
+    }
+    return x;
+}
+
+double Bisection_method(double a, double b, double eps, double alpha) {
+    double x = 0, y = 0;
+    double c = (a + b) / 2;
+    double f_x = 0;
+    double f_y = 0;
+    double f_c = function(c);
+    while (b - a > eps) {
+        x = a + (b - a) / 4;
+        y = b - (b - a) / 4;
+        f_x = function(x);
+        f_y = function(y);
+        if (f_x < f_c) {
+            b = c;
+            c = x;
+            f_c = function(x);
+        }
+        else if (f_y < f_c) {
+            a = c;
+            c = y;
+            f_c = function(y);
+        }
+        else {
+            a = x;
+            b = y;
+        }
+    }
+    return c;
+}
+int main() {
+    double a, b;
+    cin >> a >> b;
+    double alpha = 0.001;
+    double eps = 0.01;
+    cout << dichotomy_method(a,b, eps, alpha) << endl << Bisection_method(a, b, eps, alpha);
+}
