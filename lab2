@@ -1,0 +1,110 @@
+
+#include <iostream>
+#include <cmath>
+#include<vector>
+using namespace std;
+double function(double x) {
+	return sin(x) + x * x;
+}
+
+double formulaX(double a, double b) {
+	double t = 0.61803;
+	return a + (1 - t) * (b - a);
+}
+double formulaY(double a, double b) {
+	double t = 0.61803;
+	return a + t * (b - a);
+}
+
+double algorithm_goldenRatio(double a, double b) {
+	double eps = 0.0001;
+	double x, y;
+	double fx, fy;
+	x = formulaX(a, b);
+	y = formulaY(a, b);
+	while (b - a > eps) {
+		fx = function(x);
+		fy = function(y);
+		if (fx > fy) {
+			a = x;
+			x = y;
+			fx = fy;
+			y = formulaY(a, b);
+			fy= function(y);
+		}
+		else {
+			b = y;
+			y = x;
+			fy = fx;
+			x = formulaX(a, b);
+			fx= function(x);
+		}
+	}
+
+	return (a + b) / 2;
+}
+
+vector<int> Fbnch(double a, double b) {
+	double eps = 0.0001;
+	int k = 1;
+	
+	vector<int> Fibonach_znach;
+	Fibonach_znach.push_back(1);
+	Fibonach_znach.push_back(1);
+	while (Fibonach_znach[k] < (b-a)/eps) {
+		int next = Fibonach_znach[k] + Fibonach_znach[k-1];
+		Fibonach_znach.push_back(next);
+		k++;
+		//cout << next << " ";
+	}
+	//cout << endl;
+	return Fibonach_znach;
+}
+double methodFibonachi(double a, double b) {
+	double eps = 0.0001;
+	double alpha = 0.0001;
+	
+	vector <int> Fib = Fbnch(a, b);
+	int n = Fib.size() - 1;
+
+	double x, y, fx, fy;
+	
+	x = a + (double)Fib[n - 2] / Fib[n] * (b - a);
+	y = a + (double)Fib[n - 1] / Fib[n] * (b - a);
+	fx = function(x);
+	fy = function(y);
+
+	for (int k = 1; k <= n - 2; k++) {
+		if (fx > fy) {
+			a = x;
+			x = y;
+			fx = fy;
+			y = a + (double)Fib[n - k - 1] / Fib[n - k] * (b - a);
+			fy = function(y);
+		}
+		else {
+			b = y;
+			y = x;
+			fy = fx;
+			x = a + (double)Fib[n - k - 2] / Fib[n - k] * (b - a);
+			fx = function(x);
+		}
+	}
+	y += alpha;
+	fx = function(x);
+	fy = function(y);
+	if (fx > fy) {
+		a = x;
+	}
+	else {
+		b = y;
+	}
+
+	return ((a + b) / 2);
+
+}
+int main() {
+	double a=-3, b=0;
+	cout << "Algorithm GoldenRatio: " << algorithm_goldenRatio(a, b) << endl;
+	cout << "Method Fibonachi: " << methodFibonachi(a, b);
+}
