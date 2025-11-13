@@ -1,7 +1,7 @@
 #include<iostream>
 #include<vector>
 #include <cmath>
-#include "Point.h"
+#include "Point_lab3.h"
 using std::cin;
 using std::cout;
 using std::vector;
@@ -54,3 +54,4 @@ int main() {
 
 
 }
+
